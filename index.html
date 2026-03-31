@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Enterprise Revenue Operations — DataVant</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-primary: #ffffff;
+      --bg-secondary: #f5f5f2;
+      --bg-tertiary: #efefeb;
+      --text-primary: #1a1a18;
+      --text-secondary: #6b6b67;
+      --text-tertiary: #9b9b96;
+      --border: rgba(0,0,0,0.1);
+      --border-md: rgba(0,0,0,0.18);
+      --accent-blue: #185FA5;
+      --accent-blue-light: #E6F1FB;
+      --accent-blue-mid: #B5D4F4;
+      --accent-teal: #0F6E56;
+      --accent-teal-light: #E1F5EE;
+      --accent-teal-mid: #5DCAA5;
+      --accent-amber: #854F0B;
+      --accent-amber-light: #FAEEDA;
+      --accent-purple: #534AB7;
+      --accent-purple-light: #EEEDFE;
+      --accent-coral: #993C1D;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --heading-font: 'DM Serif Display', Georgia, serif;
+      --body-font: 'DM Sans', system-ui, sans-serif;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-primary: #1c1c1a;
+        --bg-secondary: #242422;
+        --bg-tertiary: #2c2c2a;
+        --text-primary: #f0ede8;
+        --text-secondary: #a0a09a;
+        --text-tertiary: #6b6b66;
+        --border: rgba(255,255,255,0.1);
+        --border-md: rgba(255,255,255,0.18);
+        --accent-blue-light: #0c2d4a;
+        --accent-blue-mid: #1a4a7a;
+        --accent-teal-light: #062e24;
+        --accent-teal-mid: #0d4d3a;
+        --accent-amber-light: #3a2208;
+        --accent-purple-light: #1e1b4a;
+      }
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--body-font);
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: var(--bg-primary);
+      border-bottom: 0.5px solid var(--border);
+      padding: 0 40px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-brand {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 6px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 12px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      padding: 4px 10px;
+      border-radius: var(--radius-md);
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .nav-links a:hover {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+    }
+
+    /* MAIN LAYOUT */
+    main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 80px 24px 80px;
+    }
+
+    /* SLIDES */
+    .slide {
+      background: var(--bg-primary);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 52px 56px 48px;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .slide-num {
+      position: absolute;
+      top: 20px; right: 24px;
+      font-size: 11px;
+      color: var(--text-tertiary);
+      letter-spacing: 0.08em;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent-blue);
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-family: var(--heading-font);
+      font-size: 40px;
+      font-weight: 400;
+      line-height: 1.15;
+      color: var(--text-primary);
+    }
+
+    h2 {
+      font-family: var(--heading-font);
+      font-size: 28px;
+      font-weight: 400;
+      color: var(--text-primary);
+    }
+
+    h3 {
+      font-family: var(--body-font);
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: var(--text-secondary);
+      margin-top: 12px;
+      line-height: 1.7;
+      max-width: 580px;
+    }
+
+    .divider {
+      width: 48px;
+      height: 2px;
+      background: var(--accent-blue);
+      margin: 16px 0 24px;
+    }
+
+    /* GRIDS */
+    .cols-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 24px; }
+    .cols-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 24px; }
+    .cols-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 24px; }
+
+    @media (max-width: 640px) {
+      .cols-3, .cols-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .cols-2 { grid-template-columns: 1fr; }
+      .slide { padding: 36px 28px 32px; }
+      h1 { font-size: 30px; }
+      h2 { font-size: 22px; }
+    }
+
+    @media (max-width: 420px) {
+      .cols-3, .cols-4 { grid-template-columns: 1fr; }
+    }
+
+    /* CARDS */
+    .card {
+      background: var(--bg-secondary);
+      border-radius: var(--radius-lg);
+      padding: 18px 20px;
+      border: 0.5px solid var(--border);
+    }
+
+    .card-title { font-size: 13px; font-weight: 500; color: var(--text-primary); margin-bottom: 6px; }
+    .card-body { font-size: 13px; color: var(--text-secondary); line-height: 1.65; }
+
+    /* PAIN CARDS */
+    .pain-card {
+      border-left: 3px solid;
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      background: var(--bg-secondary);
+      padding: 14px 16px;
+    }
+
+    /* STAT CARDS */
+    .stat-card {
+      background: var(--bg-secondary);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 22px 20px;
+      text-align: center;
+    }
+
+    .stat-num {
+      font-family: var(--heading-font);
+      font-size: 38px;
+      color: var(--text-primary);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 6px;
+      line-height: 1.4;
+    }
+
+    /* ARCHITECTURE */
+    .arch-row {
+      display: flex;
+      align-items: stretch;
+      gap: 8px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+
+    .arch-box {
+      flex: 1;
+      min-width: 100px;
+      border-radius: var(--radius-md);
+      padding: 16px 12px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .arch-arrow {
+      display: flex;
+      align-items: center;
+      color: var(--text-tertiary);
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 640px) {
+      .arch-row { flex-direction: column; }
+      .arch-arrow { transform: rotate(90deg); align-self: center; }
+    }
+
+    /* TIMELINE */
+    .timeline { margin-top: 24px; display: flex; flex-direction: column; }
+
+    .tl-item {
+      display: grid;
+      grid-template-columns: 72px 20px 1fr;
+      gap: 0 14px;
+      padding-bottom: 24px;
+      align-items: start;
+    }
+
+    .tl-date {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--accent-blue);
+      text-align: right;
+      padding-top: 3px;
+      letter-spacing: 0.04em;
+    }
+
+    .tl-line-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100%;
+    }
+
+    .tl-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+
+    .tl-line {
+      width: 1px;
+      flex: 1;
+      background: var(--border-md);
+      margin-top: 6px;
+      min-height: 30px;
+    }
+
+    .tl-head { font-size: 14px; font-weight: 500; color: var(--text-primary); }
+    .tl-sub { font-size: 13px; color: var(--text-secondary); margin-top: 4px; line-height: 1.6; }
+
+    /* OUTCOMES */
+    .outcome-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    @media (max-width: 500px) { .outcome-grid { grid-template-columns: 1fr; } }
+
+    .outcome-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      border: 0.5px solid var(--border);
+    }
+
+    .outcome-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .ot-head { font-size: 13px; font-weight: 500; color: var(--text-primary); }
+    .ot-sub { font-size: 12px; color: var(--text-secondary); margin-top: 3px; line-height: 1.5; }
+
+    /* CHART */
+    .chart-wrap { position: relative; width: 100%; margin-top: 20px; }
+
+    /* LEGEND */
+    .legend-row { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 10px; }
+    .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-secondary); }
+    .legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+    /* TECH CHIPS */
+    .tech-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+    .tech-chip {
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 500;
+      background: var(--bg-secondary);
+      border: 0.5px solid var(--border);
+      color: var(--text-secondary);
+    }
+
+    /* ALERT BOX */
+    .alert-box {
+      margin-top: 20px;
+      padding: 14px 18px;
+      border-radius: var(--radius-md);
+      border: 0.5px solid var(--border);
+      background: var(--bg-secondary);
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* CLOSER QUOTE */
+    .closer-quote {
+      font-family: var(--heading-font);
+      font-size: 22px;
+      font-weight: 400;
+      line-height: 1.4;
+      max-width: 560px;
+      color: var(--text-primary);
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      font-size: 12px;
+      color: var(--text-tertiary);
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <span class="nav-brand">DataVant — Revenue Operations</span>
+    <ul class="nav-links">
+      <li><a href="#problem">Problem</a></li>
+      <li><a href="#architecture">Architecture</a></li>
+      <li><a href="#delivery">Delivery</a></li>
+      <li><a href="#outcomes">Outcomes</a></li>
+    </ul>
+  </nav>
+
+  <main>
+
+    <!-- SLIDE 1: TITLE -->
+    <section class="slide" id="top">
+      <span class="slide-num">01 / 07</span>
+      <span class="tag">Case Study — DataVant</span>
+      <h1>Enterprise Revenue<br>Operations Platform</h1>
+      <div class="divider"></div>
+      <p class="subtitle">Designing a unified forecasting, capacity planning, and automated billing system to support IPO readiness across a 50-person customer success organization.</p>
+      <div class="tech-list">
+        <span class="tech-chip">CRM</span>
+        <span class="tech-chip">dbt</span>
+        <span class="tech-chip">Snowflake</span>
+        <span class="tech-chip">Sigma BI</span>
+        <span class="tech-chip">NetSuite</span>
+        <span class="tech-chip">Billing Automation</span>
+        <span class="tech-chip">Audit &amp; Compliance</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 2: THE PROBLEM -->
+    <section class="slide" id="problem">
+      <span class="slide-num">02 / 07</span>
+      <span class="tag">The Problem</span>
+      <h2>Three teams. Zero shared truth.</h2>
+      <div class="divider" style="background: var(--accent-coral);"></div>
+      <div class="cols-3">
+        <div class="pain-card" style="border-color: var(--accent-blue);">
+          <div class="card-title" style="color: var(--accent-blue);">Customer Success</div>
+          <div class="card-body">Managing $1M–$100M client forecasts in unversioned Google Sheets — no audit trail, anyone could edit at any time.</div>
+        </div>
+        <div class="pain-card" style="border-color: var(--accent-amber);">
+          <div class="card-title" style="color: var(--accent-amber);">Operations</div>
+          <div class="card-body">Capacity models running in Excel files that routinely crashed, blocking global resource deployment and delivery.</div>
+        </div>
+        <div class="pain-card" style="border-color: var(--accent-coral);">
+          <div class="card-title" style="color: var(--accent-coral);">Finance</div>
+          <div class="card-body">No reliable data for headcount planning or margin modeling — forecasts too unstable to act on.</div>
+        </div>
+      </div>
+      <div class="alert-box">
+        Root cause: All three functions were tightly coupled operationally but had no shared data layer — changes in one team were invisible to the others until things broke.
+      </div>
+    </section>
+
+    <!-- SLIDE 3: SCOPE & SCALE -->
+    <section class="slide" id="scope">
+      <span class="slide-num">03 / 07</span>
+      <span class="tag">Scope &amp; Scale</span>
+      <h2>What was at stake</h2>
+      <div class="divider"></div>
+      <div class="cols-4">
+        <div class="stat-card">
+          <div class="stat-num">50</div>
+          <div class="stat-label">Person CS team migrated off spreadsheets</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">90</div>
+          <div class="stat-label">Days to CRM go-live</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">$100M+</div>
+          <div class="stat-label">Project values tracked per client</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">3</div>
+          <div class="stat-label">Cross-functional teams unified on one data layer</div>
+        </div>
+      </div>
+      <div class="chart-wrap" style="height: 200px;">
+        <canvas id="timelineChart"></canvas>
+      </div>
+      <div class="legend-row">
+        <div class="legend-item"><div class="legend-dot" style="background:#185FA5;"></div>Forecasting risk (notional)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#0F6E56;"></div>Data confidence</div>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: ARCHITECTURE -->
+    <section class="slide" id="architecture">
+      <span class="slide-num">04 / 07</span>
+      <span class="tag">Solution Design</span>
+      <h2>The architecture</h2>
+      <div class="divider" style="background: var(--accent-teal);"></div>
+      <div class="arch-row">
+        <div class="arch-box" style="background: var(--accent-blue-light); color: var(--accent-blue);">
+          <div style="font-size: 17px; margin-bottom: 6px;">CRM</div>
+          <div style="font-size: 11px; font-weight: 400; opacity: 0.85;">Client forecasts, pipeline, contracts</div>
+        </div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-box" style="background: var(--accent-purple-light); color: var(--accent-purple);">
+          <div style="font-size: 17px; margin-bottom: 6px;">dbt models</div>
+          <div style="font-size: 11px; font-weight: 400; opacity: 0.85;">Business logic &amp; pacing</div>
+        </div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-box" style="background: var(--accent-teal-light); color: var(--accent-teal);">
+          <div style="font-size: 17px; margin-bottom: 6px;">Snowflake</div>
+          <div style="font-size: 11px; font-weight: 400; opacity: 0.85;">Source of truth &amp; audit trail</div>
+        </div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-box" style="background: var(--accent-amber-light); color: var(--accent-amber);">
+          <div style="font-size: 17px; margin-bottom: 6px;">Sigma BI</div>
+          <div style="font-size: 11px; font-weight: 400; opacity: 0.85;">Role-specific dashboards</div>
+        </div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-box" style="background: #FCEBEB; color: #A32D2D;">
+          <div style="font-size: 17px; margin-bottom: 6px;">NetSuite</div>
+          <div style="font-size: 11px; font-weight: 400; opacity: 0.85;">Auto-generated invoices</div>
+        </div>
+      </div>
+      <div class="cols-3">
+        <div class="card">
+          <div class="card-title">Forecasting layer</div>
+          <div class="card-body">Complex pacing functions and business logic migrated from Excel into versioned, testable dbt models.</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Billing engine</div>
+          <div class="card-body">Consumption-based contracts with escalators, exclusions, and amendments systematically tracked for the first time.</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Audit system</div>
+          <div class="card-body">Full field-level change tracking with approval workflows and proactive alerting across all billing components.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 5: DELIVERY TIMELINE -->
+    <section class="slide" id="delivery">
+      <span class="slide-num">05 / 07</span>
+      <span class="tag">Delivery</span>
+      <h2>How it was built</h2>
+      <div class="divider"></div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-date">Phase 1</div>
+          <div class="tl-line-wrap">
+            <div class="tl-dot" style="background: #185FA5;"></div>
+            <div class="tl-line"></div>
+          </div>
+          <div>
+            <div class="tl-head">CRM in 90 days</div>
+            <div class="tl-sub">Stood up a CRM for the 50-person CS team, fully replacing Google Sheets with auditable, structured client and forecast records.</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">Phase 2</div>
+          <div class="tl-line-wrap">
+            <div class="tl-dot" style="background: #534AB7;"></div>
+            <div class="tl-line"></div>
+          </div>
+          <div>
+            <div class="tl-head">Data modeling &amp; BI</div>
+            <div class="tl-sub">Migrated all forecasting logic into dbt models in Snowflake. Built role-specific Sigma dashboards for CS, Ops, and Finance — including change history and root cause tracking.</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">Phase 3</div>
+          <div class="tl-line-wrap">
+            <div class="tl-dot" style="background: #0F6E56;"></div>
+            <div class="tl-line"></div>
+          </div>
+          <div>
+            <div class="tl-head">Automated billing system</div>
+            <div class="tl-sub">Built a contract and pricing source of truth to handle complex consumption-based agreements. Automated invoice creation directly into NetSuite.</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">Phase 4</div>
+          <div class="tl-line-wrap">
+            <div class="tl-dot" style="background: #854F0B;"></div>
+          </div>
+          <div>
+            <div class="tl-head">Audit &amp; IPO readiness</div>
+            <div class="tl-sub">Designed a full approval workflow and field-level audit trail for billing data. Reviewed and approved by third-party auditors in preparation for public company standards.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 6: OUTCOMES -->
+    <section class="slide" id="outcomes">
+      <span class="slide-num">06 / 07</span>
+      <span class="tag">Outcomes</span>
+      <h2>What changed</h2>
+      <div class="divider" style="background: var(--accent-amber);"></div>
+      <div class="outcome-grid">
+        <div class="outcome-item">
+          <div class="outcome-icon" style="background: var(--accent-blue-light);">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <rect x="2" y="2" width="12" height="12" rx="2" stroke="#185FA5" stroke-width="1.5"/>
+              <path d="M5 8l2 2 4-4" stroke="#185FA5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div>
+            <div class="ot-head">Eliminated unversioned spreadsheets</div>
+            <div class="ot-sub">Every forecast change is now tracked, attributable, and reversible.</div>
+          </div>
+        </div>
+        <div class="outcome-item">
+          <div class="outcome-icon" style="background: var(--accent-teal-light);">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3 13l3-5 3 3 4-6" stroke="#0F6E56" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div>
+            <div class="ot-head">Shared data layer across 3 functions</div>
+            <div class="ot-sub">CS, Operations, and Finance now operate from a single source of truth.</div>
+          </div>
+        </div>
+        <div class="outcome-item">
+          <div class="outcome-icon" style="background: var(--accent-amber-light);">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <circle cx="8" cy="8" r="5" stroke="#854F0B" stroke-width="1.5"/>
+              <path d="M8 5v3l2 2" stroke="#854F0B" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <div class="ot-head">Billing fully automated</div>
+            <div class="ot-sub">Complex consumption contracts systematically managed; invoices generated automatically into NetSuite.</div>
+          </div>
+        </div>
+        <div class="outcome-item">
+          <div class="outcome-icon" style="background: var(--accent-purple-light);">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 2l1.8 3.6 4 .6-2.9 2.8.7 4L8 11l-3.6 1.9.7-4L2.2 6.2l4-.6L8 2z" stroke="#534AB7" stroke-width="1.4" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div>
+            <div class="ot-head">Audit-ready for IPO</div>
+            <div class="ot-sub">Field-level change tracking and approval workflows passed third-party auditor review.</div>
+          </div>
+        </div>
+      </div>
+      <div class="chart-wrap" style="height: 180px; margin-top: 28px;">
+        <canvas id="outcomeChart"></canvas>
+      </div>
+      <div class="legend-row">
+        <div class="legend-item"><div class="legend-dot" style="background:#B5D4F4;"></div>Before</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#5DCAA5;"></div>After</div>
+      </div>
+    </section>
+
+    <!-- SLIDE 7: CLOSING -->
+    <section class="slide" id="close">
+      <span class="slide-num">07 / 07</span>
+      <span class="tag">Key Takeaway</span>
+      <p class="closer-quote">"A single trusted data infrastructure replaced a fragmented process — and gave three misaligned teams a shared foundation for forecasting, operations, and financial reporting."</p>
+      <div class="divider" style="background: var(--accent-blue);"></div>
+      <div class="cols-3">
+        <div>
+          <h3>Role</h3>
+          <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;">Sole architect &amp; implementer across CRM, data engineering, BI, billing, and compliance layers.</p>
+        </div>
+        <div>
+          <h3>Stack</h3>
+          <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;">CRM · dbt · Snowflake · Sigma · NetSuite · custom audit workflows</p>
+        </div>
+        <div>
+          <h3>Context</h3>
+          <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;">Pre-IPO scale-up environment; third-party auditor approved; company-wide adoption.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    Built for GitHub Pages · DataVant Revenue Operations Case Study
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+  <script>
+    new Chart(document.getElementById('timelineChart'), {
+      type: 'line',
+      data: {
+        labels: ['Pre-CRM', 'CRM Live', 'dbt + Snowflake', 'Sigma BI', 'Billing', 'Audit Complete'],
+        datasets: [
+          {
+            label: 'Forecasting risk',
+            data: [95, 60, 35, 20, 10, 5],
+            borderColor: '#185FA5',
+            backgroundColor: 'rgba(24,95,165,0.08)',
+            fill: true,
+            tension: 0.4,
+            pointRadius: 4,
+            pointBackgroundColor: '#185FA5'
+          },
+          {
+            label: 'Data confidence',
+            data: [5, 30, 60, 75, 88, 98],
+            borderColor: '#0F6E56',
+            backgroundColor: 'rgba(15,110,86,0.07)',
+            fill: true,
+            tension: 0.4,
+            pointRadius: 4,
+            pointBackgroundColor: '#0F6E56'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false } },
+        scales: {
+          y: {
+            min: 0, max: 100,
+            ticks: { callback: v => v + '%', font: { size: 11 }, color: '#888' },
+            grid: { color: 'rgba(128,128,128,0.12)' }
+          },
+          x: {
+            ticks: { font: { size: 11 }, color: '#888' },
+            grid: { display: false }
+          }
+        }
+      }
+    });
+
+    new Chart(document.getElementById('outcomeChart'), {
+      type: 'bar',
+      data: {
+        labels: ['Forecast accuracy', 'Billing automation', 'Audit coverage', 'Cross-team visibility'],
+        datasets: [
+          { label: 'Before', data: [20, 0, 0, 15], backgroundColor: '#B5D4F4' },
+          { label: 'After',  data: [92, 95, 100, 90], backgroundColor: '#5DCAA5' }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: {
+            min: 0, max: 100,
+            ticks: { callback: v => v + '%', font: { size: 11 }, color: '#888' },
+            grid: { color: 'rgba(128,128,128,0.12)' }
+          },
+          x: {
+            ticks: { font: { size: 11 }, color: '#888' },
+            grid: { display: false }
+          }
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
